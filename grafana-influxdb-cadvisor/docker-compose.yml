@@ -20,4 +20,4 @@ cadvisor:
         - /var/lib/docker/:/var/lib/docker:ro
     ports:
         - "8080:8080"
-    command: -storage_driver_db=cadvisor -storage_driver_host=docker0:8086
+    command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=172.17.42.1:8086 -storage_driver_user=root -storage_driver_password=root
