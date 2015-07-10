@@ -43,9 +43,9 @@ database = "telegraf" # required.
 # dc = "us-east-1"
 
 # Configuration for telegraf itself
-# [agent]
+[agent]
 # interval = "10s"
-# debug = false
+ debug = true
 # hostname = "prod3241"
 
 # PLUGINS

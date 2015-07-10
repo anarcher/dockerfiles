@@ -1,5 +1,5 @@
 influxdb:
-    image: anarcher/influxdb:0.9.1
+    image: tutum/influxdb:0.9
     ports:
         - "8083:8083"
         - "8086:8086"
@@ -10,4 +10,11 @@ telegraf:
     build: .
     dockerfile: telegraf.Dockerfile
     volumes: 
+        - /sys:/sys:ro
         - /var/run/docker.sock:/var/run/docker.sock
+
+chronograf:
+    build: .
+    dockerfile: chronograf.Dockerfile
+    ports:
+        - "8081:80"
