@@ -1,10 +1,12 @@
 prom:
     #build: .
     image: prom/prometheus
+    #command: -log.level=debug -alertmanager.url=""
+    command: -log.level=debug -config.file=/prometheus.yml -alertmanager.url=http://172.17.42.1:9093
     ports:
         - "9090:9090"
     volumes:
-        - ./prometheus.yml:/etc/prometheus/prometheus.yml
+        - $PWD/prometheus.yml:/prometheus.yml
 cadvisor:
     image: google/cadvisor:latest
     volumes:
@@ -14,4 +16,18 @@ cadvisor:
         - /var/lib/docker/:/var/lib/docker:ro
     ports:
         - "8080:8080"
-
+alertmanager:
+    image: prom/alertmanager
+    ports:
+        - "9093:9093"
+    volumes:
+        - $PWD/alertmanager.conf:/alertmanager.conf
+    command: -config.file=/alertmanager.conf
+promdash:
+    image: prom/promdash
+    ports:
+        - "8081:3000"
+    volumes:
+        - /tmp/prom:/tmp/prom
+    environment:
+        - DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3
