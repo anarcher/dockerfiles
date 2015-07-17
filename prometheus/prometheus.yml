@@ -7,6 +7,10 @@ global:
   labels:
     monitor: 'cadvisor-monitor'
 
+rule_files:
+    - '/rules/alert.rule.conf'
+
+
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
@@ -20,11 +24,12 @@ scrape_configs:
     honor_labels: true
 
     relabel_config:
-      - source_labels: __address__
+      - source_labels: '__address__'
         regex: ^(.*):.*$
-        target_label: ip
+        target_label: 'ip'
         replacement: ${1}
     target_groups:
-      - targets: ['172.17.42.1:8080']
+        - targets: ['172.17.42.1:8080']
         labels:
-          region: of01
+          region: ac01
+

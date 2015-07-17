@@ -1,11 +1,13 @@
 prom:
     #build: .
+    #image: prom/prometheus:master
     image: prom/prometheus
     #command: -log.level=debug -alertmanager.url=""
     command: -log.level=debug -config.file=/prometheus.yml -alertmanager.url=http://172.17.42.1:9093
     ports:
         - "9090:9090"
     volumes:
+        - $PWD/rules:/rules
         - $PWD/prometheus.yml:/prometheus.yml
 cadvisor:
     image: google/cadvisor:latest
