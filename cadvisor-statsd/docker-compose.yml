@@ -1,0 +1,19 @@
+graphite-statsd:
+    image: hopsoft/graphite-statsd
+    ports:
+        - "80:80"
+        - "2003:2003"
+        - "2004:2004"
+        - "7002:7002"
+        - "8125:8125/udp"
+cadvisor:
+    #    image: google/cadvisor
+    image: anarcher/cadvisor:0.16.0.2
+    volumes:
+        - "/var/lib/docker/:/var/lib/docker:ro"
+        - "/:/rootfs:ro"
+        - "/var/run:/var/run:rw"
+        - "/sys:/sys:ro"
+    links:
+        - graphite-statsd
+    command: -storage_driver=statsd  -storage_driver_host="graphite-statsd:8125" -v 1
