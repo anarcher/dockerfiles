@@ -2,14 +2,23 @@ grafana:
     image: grafana/grafana
     ports:
         - "3000:3000"
-graphite-statsd:
-    image: hopsoft/graphite-statsd
+graphite:
+    image: nickstenning/graphite
     ports:
         - "80:80"
         - "2003:2003"
         - "2004:2004"
         - "7002:7002"
+statsd:
+    image: anarcher/statsd
+    ports:
         - "8125:8125/udp"
+        - "8126:8126"
+    environment:
+        - GRAPHITE_HOST=graphite
+        - GRAPHITE_PORT=2003
+    links:
+        - graphite
 cadvisor:
     #    image: google/cadvisor
     image: anarcher/cadvisor:0.16.0.2
@@ -19,5 +28,5 @@ cadvisor:
         - "/var/run:/var/run:rw"
         - "/sys:/sys:ro"
     links:
-        - graphite-statsd
-    command: -storage_driver=statsd  -storage_driver_host="graphite-statsd:8125" -v 1
+        - statsd
+    command: -storage_driver=statsd  -storage_driver_host="statsd:8125" -v 1
